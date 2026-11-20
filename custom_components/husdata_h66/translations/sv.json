@@ -1,0 +1,315 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "Ange adressen till din Husdata H60/H66. Modbus TCP måste vara påslaget i H60/H66 (MODBUS_PORT 502 under Config > Modbus). H60/H66 tar bara emot en Modbus-klient åt gången.",
+        "data": {
+          "host": "Värd",
+          "port": "Port",
+          "unit_id": "Enhets-ID"
+        },
+        "data_description": {
+          "host": "Värdnamn eller IP-adress till H60/H66.",
+          "port": "Inställningen MODBUS_PORT i H60/H66, oftast 502.",
+          "unit_id": "Modbus enhets-ID, oftast 1."
+        }
+      },
+      "reconfigure": {
+        "description": "Ändra hur Home Assistant når din Husdata H60/H66.",
+        "data": {
+          "host": "Värd",
+          "port": "Port",
+          "unit_id": "Enhets-ID"
+        },
+        "data_description": {
+          "host": "Värdnamn eller IP-adress till H60/H66.",
+          "port": "Inställningen MODBUS_PORT i H60/H66, oftast 502.",
+          "unit_id": "Modbus enhets-ID, oftast 1."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Kunde inte läsa H60/H66 via Modbus. Kontrollera adressen, att Modbus TCP är påslaget och att ingen annan Modbus-klient är ansluten. {error}",
+      "unknown": "Oväntat fel"
+    },
+    "abort": {
+      "already_configured": "Den här H60/H66 är redan konfigurerad",
+      "reconfigure_successful": "H60/H66 konfigurerades om",
+      "wrong_device": "Adressen tillhör en annan H60/H66"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "scan_interval": "Avläsningsintervall"
+        },
+        "data_description": {
+          "scan_interval": "Hur ofta alla värden läses från H60/H66."
+        }
+      }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "compressor": {
+        "name": "Kompressor"
+      },
+      "add_heat_step_1": {
+        "name": "Tillsatsvärme steg 1"
+      },
+      "add_heat_step_2": {
+        "name": "Tillsatsvärme steg 2"
+      },
+      "pump_cold_circuit": {
+        "name": "Köldbärarpump"
+      },
+      "pump_heat_circuit": {
+        "name": "Värmebärarpump"
+      },
+      "pump_radiator": {
+        "name": "Radiatorpump"
+      },
+      "switch_valve_1": {
+        "name": "Varmvattenproduktion"
+      },
+      "alarm": {
+        "name": "Larm"
+      }
+    },
+    "button": {
+      "alarm_reset": {
+        "name": "Återställ larm"
+      }
+    },
+    "number": {
+      "room_setpoint": {
+        "name": "Börvärde rumstemperatur"
+      },
+      "heat_curve": {
+        "name": "Radiatorer värmekurva"
+      },
+      "heat_curve_parallel": {
+        "name": "Radiatorer parallellförskjutning"
+      },
+      "hot_water_stop_temperature": {
+        "name": "Varmvatten stopptemperatur"
+      },
+      "hot_water_difference": {
+        "name": "Varmvatten startdifferens"
+      },
+      "heat_curve_2": {
+        "name": "Golvvärme värmekurva"
+      },
+      "heat_curve_parallel_2": {
+        "name": "Golvvärme parallellförskjutning"
+      },
+      "hot_water_start_temperature": {
+        "name": "Varmvatten starttemperatur"
+      },
+      "extra_hot_water": {
+        "name": "Extra varmvatten"
+      },
+      "summer_mode": {
+        "name": "Sommarläge utetemperatur"
+      },
+      "holiday_mode": {
+        "name": "Semesterläge"
+      }
+    },
+    "select": {
+      "electric_heater_max_power": {
+        "name": "Elpatron max effekt",
+        "state": {
+          "3_kw": "3 kW",
+          "6_kw": "6 kW",
+          "9_kw": "9 kW"
+        }
+      }
+    },
+    "sensor": {
+      "radiator_return": {
+        "name": "Radiatorer retur"
+      },
+      "radiator_forward": {
+        "name": "Radiatorer framledning"
+      },
+      "heat_carrier_return": {
+        "name": "Värmebärare retur"
+      },
+      "heat_carrier_forward": {
+        "name": "Värmebärare framledning"
+      },
+      "brine_in": {
+        "name": "Köldbärare in"
+      },
+      "brine_out": {
+        "name": "Köldbärare ut"
+      },
+      "outdoor": {
+        "name": "Utetemperatur"
+      },
+      "indoor": {
+        "name": "Innetemperatur"
+      },
+      "hot_water_top": {
+        "name": "Varmvatten topp"
+      },
+      "hot_water_mid": {
+        "name": "Varmvatten"
+      },
+      "hot_gas": {
+        "name": "Hetgas"
+      },
+      "heating_setpoint": {
+        "name": "Börvärde värme"
+      },
+      "hot_water_setpoint": {
+        "name": "Börvärde varmvatten"
+      },
+      "radiator_forward_2": {
+        "name": "Golvvärme framledning"
+      },
+      "radiator_return_2": {
+        "name": "Golvvärme retur"
+      },
+      "suction_gas": {
+        "name": "Suggas"
+      },
+      "liquid_line": {
+        "name": "Vätskeledning"
+      },
+      "pool_temperature": {
+        "name": "Pool"
+      },
+      "current_l1": {
+        "name": "Ström L1"
+      },
+      "current_l2": {
+        "name": "Ström L2"
+      },
+      "current_l3": {
+        "name": "Ström L3"
+      },
+      "degree_minutes": {
+        "name": "Gradminuter"
+      },
+      "heating_setpoint_2": {
+        "name": "Börvärde golvvärme"
+      },
+      "extra_hot_water_mode": {
+        "name": "Extra varmvatten",
+        "state": {
+          "off": "Av",
+          "3h": "3 timmar",
+          "6h": "6 timmar",
+          "12h": "12 timmar",
+          "24h": "24 timmar"
+        }
+      },
+      "estimated_power": {
+        "name": "Beräknad effekt"
+      },
+      "operating_mode": {
+        "name": "Driftläge",
+        "state": {
+          "summer": "Sommar",
+          "spring_autumn": "Vår/Höst",
+          "winter": "Vinter",
+          "auto": "Auto"
+        }
+      },
+      "compressor_starts": {
+        "name": "Kompressorstarter"
+      },
+      "compressor_hours": {
+        "name": "Drifttid kompressor"
+      },
+      "aux_heater_hours": {
+        "name": "Drifttid tillsats"
+      },
+      "hot_water_hours": {
+        "name": "Drifttid varmvatten"
+      },
+      "add_heat_status": {
+        "name": "Tillsatsvärme"
+      },
+      "alarm_code": {
+        "name": "Senaste larm",
+        "state": {
+          "alarm_1": "Givare radiatorretur (GT1)",
+          "alarm_2": "Utegivare (GT2)",
+          "alarm_3": "Givare varmvatten (GT3)",
+          "alarm_4": "Givare blandningsventil (GT4)",
+          "alarm_5": "Rumsgivare (GT5)",
+          "alarm_6": "Givare kompressor (GT6)",
+          "alarm_7": "Givare värmebärare ut (GT8)",
+          "alarm_8": "Givare värmebärare in (GT9)",
+          "alarm_9": "Givare köldbärare in (GT10)",
+          "alarm_10": "Givare köldbärare ut (GT11)",
+          "alarm_11": "Kompressorkretsbrytare",
+          "alarm_12": "Elkassett",
+          "alarm_13": "Pumpkretsbrytare (MB2)",
+          "alarm_14": "Lågtryckspressostat (LP)",
+          "alarm_15": "Högtryckspressostat (HP)",
+          "alarm_16": "Hög retur VP (GT9)",
+          "alarm_17": "Värmebärare ut max (GT8)",
+          "alarm_18": "Köldbärare in under gräns (GT10)",
+          "alarm_19": "Köldbärare ut under gräns (GT11)",
+          "alarm_20": "Överhettning kompressor (GT6)",
+          "alarm_21": "Fel fasföljd",
+          "alarm_22": "Strömavbrott",
+          "alarm_23": "För stor temperaturdifferens"
+        },
+        "state_attributes": {
+          "code": {
+            "name": "Kod"
+          }
+        }
+      },
+      "compressor_hours_heating": {
+        "name": "Drifttid kompressor värme"
+      },
+      "compressor_hours_hot_water": {
+        "name": "Drifttid kompressor varmvatten"
+      },
+      "aux_heater_hours_heating": {
+        "name": "Drifttid elpatron värme"
+      },
+      "aux_heater_hours_hot_water": {
+        "name": "Drifttid elpatron varmvatten"
+      },
+      "power_consumption": {
+        "name": "Effektförbrukning"
+      },
+      "accumulated_consumption": {
+        "name": "Ackumulerad förbrukning"
+      },
+      "room_sensor_influence": {
+        "name": "Rumsgivarens inverkan"
+      }
+    },
+    "switch": {
+      "electric_heater_allowed": {
+        "name": "Elpatron tillåten"
+      },
+      "external_control": {
+        "name": "Extern styrning"
+      }
+    }
+  },
+  "exceptions": {
+    "update_failed": {
+      "message": "Kunde inte läsa H60/H66: {error}"
+    },
+    "communication_error": {
+      "message": "Kunde inte skriva till H60/H66: {error}"
+    },
+    "invalid_value": {
+      "message": "Ogiltigt värde: {error}"
+    },
+    "connection_in_use": {
+      "message": "Modbus-anslutningen till H60/H66 används redan med andra inställningar: {error}"
+    }
+  }
+}

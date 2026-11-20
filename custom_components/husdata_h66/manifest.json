@@ -1,0 +1,15 @@
+{
+  "domain": "husdata_h66",
+  "name": "Husdata H60/H66 (NIBE)",
+  "categories": ["climate.heat_pumps_air_conditioning"],
+  "codeowners": [],
+  "config_flow": true,
+  "dependencies": ["modbus"],
+  "documentation": "https://github.com/jonnybergdahl/HomeAssistant_Husdata_H66_Modbus_Integration",
+  "integration_type": "device",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/jonnybergdahl/HomeAssistant_Husdata_H66_Modbus_Integration/issues",
+  "loggers": ["husdata_h66", "modbus_connection", "tmodbus"],
+  "requirements": ["husdata-h66-modbus==0.1.2"],
+  "version": "0.2.0"
+}
