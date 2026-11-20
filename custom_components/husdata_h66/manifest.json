@@ -5,10 +5,10 @@
   "codeowners": [],
   "config_flow": true,
   "dependencies": ["modbus"],
-  "documentation": "https://github.com/jonnybergdahl/HomeAssistant_Husdata_H66_Modbus_Integration",
+  "documentation": "https://github.com/amblyo/husdata-h60-nibe",
   "integration_type": "device",
   "iot_class": "local_polling",
-  "issue_tracker": "https://github.com/jonnybergdahl/HomeAssistant_Husdata_H66_Modbus_Integration/issues",
+  "issue_tracker": "https://github.com/amblyo/husdata-h60-nibe/issues",
   "loggers": ["husdata_h66", "modbus_connection", "tmodbus"],
   "requirements": ["husdata-h66-modbus==0.1.2"],
   "version": "0.2.0"
