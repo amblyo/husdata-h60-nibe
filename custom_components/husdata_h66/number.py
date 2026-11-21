@@ -37,7 +37,6 @@ def _temperature(key: str, **kwargs) -> H66NumberEntityDescription:
 
 
 NUMBERS: tuple[H66NumberEntityDescription, ...] = (
-    _temperature("room_setpoint", native_step=0.5),
     H66NumberEntityDescription(
         key="heat_curve",
         translation_key="heat_curve",

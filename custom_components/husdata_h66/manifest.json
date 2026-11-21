@@ -1,6 +1,6 @@
 {
   "domain": "husdata_h66",
-  "name": "Husdata H60/H66 (NIBE)",
+  "name": "Husdata H60 (NIBE 1130)",
   "categories": ["climate.heat_pumps_air_conditioning"],
   "codeowners": [],
   "config_flow": true,

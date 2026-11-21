@@ -40,6 +40,7 @@ from .const import (
     MODEL,
 )
 from .coordinator import H66ConfigEntry
+from .nibe import is_nibe
 from .web import H66Info, H66WebError, async_fetch_info, registers_to_data
 
 STEP_USER_DATA_SCHEMA = vol.Schema(
@@ -106,7 +107,11 @@ async def _async_probe(hass: HomeAssistant, user_input: dict[str, Any]) -> Probe
     return ProbeResult(
         # Without the web page there is no MAC; the address is the best there is.
         unique_id=info.mac if info and info.mac else f"{host}:{port}:{unit_id}",
-        title=f"{MODEL} {controller}" if controller else f"Husdata {MODEL}",
+        title=(
+            "Husdata H60 (NIBE 1130)"
+            if is_nibe(registers, controller)
+            else f"{MODEL} {controller}" if controller else f"Husdata {MODEL}"
+        ),
         data={
             CONF_HOST: host,
             CONF_PORT: port,
