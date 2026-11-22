@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from homeassistant.components.sensor import (
+    RestoreSensor,
     SensorDeviceClass,
     SensorEntity,
     SensorEntityDescription,
@@ -17,7 +18,8 @@ from homeassistant.const import (
     UnitOfTemperature,
     UnitOfTime,
 )
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
+from homeassistant.util import dt as dt_util
 from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from husdata_h66 import ALARM_CODES, VariableKind
@@ -258,6 +260,7 @@ async def async_setup_entry(
     ]
     if all(key in coordinator.registers for key in _PHASE_KEYS):
         entities.append(H66EstimatedPowerSensor(coordinator, ESTIMATED_POWER))
+        entities.append(H66EstimatedEnergySensor(coordinator, ESTIMATED_ENERGY))
     async_add_entities(entities)
 
 
@@ -320,6 +323,19 @@ ESTIMATED_POWER = SensorEntityDescription(
 )
 
 
+ESTIMATED_ENERGY = SensorEntityDescription(
+    key="estimated_energy",
+    translation_key="estimated_energy",
+    device_class=SensorDeviceClass.ENERGY,
+    native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
+    state_class=SensorStateClass.TOTAL_INCREASING,
+    suggested_display_precision=2,
+)
+
+# Longest gap between two polls that still counts towards the energy total.
+_MAX_GAP_SECONDS = 600
+
+
 class H66EstimatedPowerSensor(H66Entity, SensorEntity):
     """Electrical power, estimated from the three phase currents."""
 
@@ -332,6 +348,60 @@ class H66EstimatedPowerSensor(H66Entity, SensorEntity):
         if any(value is None for value in amps):
             return None
         return round(sum(amps) * _PHASE_VOLTAGE * _POWER_FACTOR)
+
+
+class H66EstimatedEnergySensor(H66Entity, RestoreSensor):
+    """Energy in kWh: the estimated power integrated over time (trapezoid)."""
+
+    entity_description: SensorEntityDescription
+
+    def __init__(
+        self, coordinator: H66Coordinator, description: SensorEntityDescription
+    ) -> None:
+        """Initialise the sensor."""
+        super().__init__(coordinator, description)
+        self._total_kwh = 0.0
+        self._last_power: float | None = None
+        self._last_time = None
+
+    async def async_added_to_hass(self) -> None:
+        """Restore the total from before a restart."""
+        await super().async_added_to_hass()
+        if (last := await self.async_get_last_sensor_data()) is not None and (
+            last.native_value is not None
+        ):
+            try:
+                self._total_kwh = float(last.native_value)
+            except (TypeError, ValueError):
+                self._total_kwh = 0.0
+
+    def _power(self) -> float | None:
+        amps = [self.coordinator.data.get(key) for key in _PHASE_KEYS]
+        if any(value is None for value in amps):
+            return None
+        return sum(amps) * _PHASE_VOLTAGE * _POWER_FACTOR
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        power = self._power()
+        now = dt_util.utcnow()
+        if power is not None:
+            if self._last_power is not None and self._last_time is not None:
+                seconds = (now - self._last_time).total_seconds()
+                if 0 < seconds <= _MAX_GAP_SECONDS:
+                    average_w = (self._last_power + power) / 2
+                    self._total_kwh += average_w * seconds / 3_600_000
+            self._last_power = power
+            self._last_time = now
+        else:
+            self._last_power = None
+            self._last_time = None
+        super()._handle_coordinator_update()
+
+    @property
+    def native_value(self) -> float:
+        """Return the accumulated energy in kWh."""
+        return round(self._total_kwh, 4)
 
 
 class H66OperatingModeSensor(H66Sensor):

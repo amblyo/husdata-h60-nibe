@@ -210,6 +210,9 @@
       "estimated_power": {
         "name": "Estimated power"
       },
+      "estimated_energy": {
+        "name": "Estimated energy"
+      },
       "operating_mode": {
         "name": "Operating mode",
         "state": {

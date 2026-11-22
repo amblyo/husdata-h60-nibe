@@ -210,6 +210,9 @@
       "estimated_power": {
         "name": "Beräknad effekt"
       },
+      "estimated_energy": {
+        "name": "Beräknad energi"
+      },
       "operating_mode": {
         "name": "Driftläge",
         "state": {

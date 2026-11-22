@@ -84,6 +84,9 @@
       "estimated_power": {
         "default": "mdi:flash"
       },
+      "estimated_energy": {
+        "default": "mdi:lightning-bolt-circle"
+      },
       "operating_mode": {
         "default": "mdi:sun-snowflake"
       },
