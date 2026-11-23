@@ -144,6 +144,56 @@ SENSORS: tuple[SensorEntityDescription, ...] = (
         for phase in (1, 2, 3)
     ),
     SensorEntityDescription(
+        key="heat_curve",
+        translation_key="heat_curve",
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        suggested_display_precision=0,
+    ),
+    SensorEntityDescription(
+        key="heat_curve_parallel",
+        translation_key="heat_curve_parallel",
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        suggested_display_precision=0,
+    ),
+    SensorEntityDescription(
+        key="heat_curve_2",
+        translation_key="heat_curve_2",
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        suggested_display_precision=0,
+    ),
+    SensorEntityDescription(
+        key="heat_curve_parallel_2",
+        translation_key="heat_curve_parallel_2",
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        suggested_display_precision=0,
+    ),
+    SensorEntityDescription(
+        key="hot_water_start_temperature",
+        translation_key="hot_water_start_temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        suggested_display_precision=0,
+    ),
+    SensorEntityDescription(
+        key="hot_water_stop_temperature",
+        translation_key="hot_water_stop_temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        suggested_display_precision=0,
+    ),
+    SensorEntityDescription(
         key="degree_minutes",
         translation_key="degree_minutes",
         native_unit_of_measurement="GM",
@@ -258,6 +308,11 @@ async def async_setup_entry(
     entities: list[SensorEntity] = [
         classes.get(d.key, H66Sensor)(coordinator, d) for d in descriptions
     ]
+    entities.extend(
+        H66DeltaSensor(coordinator, description, warm, cold)
+        for description, warm, cold in DELTAS
+        if warm in coordinator.registers and cold in coordinator.registers
+    )
     if all(key in coordinator.registers for key in _PHASE_KEYS):
         entities.append(H66EstimatedPowerSensor(coordinator, ESTIMATED_POWER))
         entities.append(H66EstimatedEnergySensor(coordinator, ESTIMATED_ENERGY))
@@ -321,6 +376,60 @@ ESTIMATED_POWER = SensorEntityDescription(
     state_class=SensorStateClass.MEASUREMENT,
     suggested_display_precision=0,
 )
+
+
+# Temperature differences: (description, warm side, cold side).
+DELTAS: tuple[tuple[SensorEntityDescription, str, str], ...] = (
+    (
+        SensorEntityDescription(
+            key="brine_delta",
+            translation_key="brine_delta",
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            state_class=SensorStateClass.MEASUREMENT,
+            suggested_display_precision=1,
+        ),
+        "brine_in",
+        "brine_out",
+    ),
+    (
+        SensorEntityDescription(
+            key="heat_carrier_delta",
+            translation_key="heat_carrier_delta",
+            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+            state_class=SensorStateClass.MEASUREMENT,
+            suggested_display_precision=1,
+        ),
+        "heat_carrier_forward",
+        "radiator_return",
+    ),
+)
+
+
+class H66DeltaSensor(H66Entity, SensorEntity):
+    """Difference between two temperature registers (warm minus cold side)."""
+
+    entity_description: SensorEntityDescription
+
+    def __init__(
+        self,
+        coordinator: H66Coordinator,
+        description: SensorEntityDescription,
+        warm_key: str,
+        cold_key: str,
+    ) -> None:
+        """Initialise the sensor."""
+        super().__init__(coordinator, description)
+        self._warm_key = warm_key
+        self._cold_key = cold_key
+
+    @property
+    def native_value(self) -> float | None:
+        """Return warm minus cold in degrees, or None if either is missing."""
+        warm = self.coordinator.data.get(self._warm_key)
+        cold = self.coordinator.data.get(self._cold_key)
+        if _no_sensor(warm) or _no_sensor(cold):
+            return None
+        return round(warm - cold, 1)
 
 
 ESTIMATED_ENERGY = SensorEntityDescription(

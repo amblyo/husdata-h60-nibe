@@ -10,7 +10,7 @@ Tested with: NIBE Fighter F1130 (two heating circuits: radiators and floor heati
 
 - The H60 home page never closes its table rows and shows some variable IDs twice (`2D02 / 0136`). The page is normalised before it is parsed. Without this the register map could not be read, and the integration fell back to the Rego 600 map.
 - A **NIBE map** (`nibe.py`): keys, scales and limits for the NIBE variable IDs, with the limits the H60 page reports. It is used when the controller name contains NIBE/Fighter, or when a NIBE-only variable ID is present. Rego 600 is untouched.
-- New entities: phase currents, an **estimated power** sensor, degree minutes, compressor starts, operating hours, the second heating circuit (floor heating), the operating mode (Summer, Spring/Autumn, Winter, Auto) and the extra hot water state.
+- New entities: phase currents, estimated **house power** and **house energy** sensors, degree minutes, compressor starts, operating hours, the second heating circuit (floor heating), the operating mode (Summer, Spring/Autumn, Winter, Auto) and the extra hot water state.
 - A temperature the gateway reports for a missing sensor (`-3276.8` or `1000`) is shown as unknown.
 - Entity names are grouped as **Radiators**, **Floor heating** and **Hot water**.
 - The domain is still `husdata_h66`, so an existing setup, its devices and entity IDs keep working.
@@ -32,12 +32,16 @@ Modbus TCP must be turned on in the gateway (**Config → Modbus**, `MODBUS_PORT
 | Hot water | Start and stop temperature (settable), hot water temperature, hot water production, operating hours |
 | Room | Room setpoint (settable), indoor temperature, room sensor influence |
 | Heat pump | Compressor, brine pump, heat carrier pump, radiator pump, additional heat steps, hot gas, suction gas, liquid line, brine in/out |
-| Power | Phase currents L1–L3, **estimated power** (see below) |
+| Power | Phase currents L1–L3, **house power / house energy (estimated)** (see below) |
 | Other | Operating mode, degree minutes, alarm, compressor starts, compressor/additional heat hours |
 
-### Estimated power
+### House power and energy (estimated)
 
-The gateway reports the phase currents only. The estimate is `(L1 + L2 + L3) × 230 V × 0.9`. The power factor `0.9` is an assumption (constant `_POWER_FACTOR` in `sensor.py`); compare with a real meter if you need accuracy. To get energy, create a *Integral sensor* helper (Riemann sum) from the estimated power.
+The gateway reports the phase currents only. The estimate is `(L1 + L2 + L3) × 230 V × 0.9`. The power factor `0.9` is an assumption (constant `_POWER_FACTOR` in `sensor.py`); compare with a real meter if you need accuracy.
+
+**Important:** on many NIBE installations the current sensors (BE1–BE3) sit on the incoming mains of the whole house, not on the heat pump alone. In that case the values include everything else in the house (EV chargers, oven, dryer, ...). Check by comparing with your electricity meter. For the heat pump's own consumption you need a separate meter.
+
+The *house energy* sensor integrates the estimated power over time (kWh, total increasing) and can be used in the Energy dashboard.
 
 ## Custom registers (advanced, H60)
 

@@ -75,6 +75,30 @@
       "alarm_code": {
         "default": "mdi:history"
       },
+      "heat_curve": {
+        "default": "mdi:chart-bell-curve-cumulative"
+      },
+      "heat_curve_parallel": {
+        "default": "mdi:arrow-up-down"
+      },
+      "heat_curve_2": {
+        "default": "mdi:chart-bell-curve-cumulative"
+      },
+      "heat_curve_parallel_2": {
+        "default": "mdi:arrow-up-down"
+      },
+      "hot_water_start_temperature": {
+        "default": "mdi:water-boiler"
+      },
+      "hot_water_stop_temperature": {
+        "default": "mdi:water-boiler"
+      },
+      "brine_delta": {
+        "default": "mdi:delta"
+      },
+      "heat_carrier_delta": {
+        "default": "mdi:delta"
+      },
       "degree_minutes": {
         "default": "mdi:chart-line"
       },

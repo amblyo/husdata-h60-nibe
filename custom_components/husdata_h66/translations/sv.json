@@ -191,6 +191,30 @@
       "current_l3": {
         "name": "Ström L3"
       },
+      "heat_curve": {
+        "name": "Radiatorer värmekurva"
+      },
+      "heat_curve_parallel": {
+        "name": "Radiatorer parallellförskjutning"
+      },
+      "heat_curve_2": {
+        "name": "Golvvärme värmekurva"
+      },
+      "heat_curve_parallel_2": {
+        "name": "Golvvärme parallellförskjutning"
+      },
+      "hot_water_start_temperature": {
+        "name": "Varmvatten starttemperatur"
+      },
+      "hot_water_stop_temperature": {
+        "name": "Varmvatten stopptemperatur"
+      },
+      "brine_delta": {
+        "name": "Köldbärare delta"
+      },
+      "heat_carrier_delta": {
+        "name": "Värmebärare delta"
+      },
       "degree_minutes": {
         "name": "Gradminuter"
       },
@@ -208,10 +232,10 @@
         }
       },
       "estimated_power": {
-        "name": "Beräknad effekt"
+        "name": "Husets effekt (uppskattad)"
       },
       "estimated_energy": {
-        "name": "Beräknad energi"
+        "name": "Husets energi (uppskattad)"
       },
       "operating_mode": {
         "name": "Driftläge",

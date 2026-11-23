@@ -191,6 +191,30 @@
       "current_l3": {
         "name": "Current L3"
       },
+      "heat_curve": {
+        "name": "Radiators heat curve"
+      },
+      "heat_curve_parallel": {
+        "name": "Radiators parallel offset"
+      },
+      "heat_curve_2": {
+        "name": "Floor heating heat curve"
+      },
+      "heat_curve_parallel_2": {
+        "name": "Floor heating parallel offset"
+      },
+      "hot_water_start_temperature": {
+        "name": "Hot water start temperature"
+      },
+      "hot_water_stop_temperature": {
+        "name": "Hot water stop temperature"
+      },
+      "brine_delta": {
+        "name": "Brine delta"
+      },
+      "heat_carrier_delta": {
+        "name": "Heat carrier delta"
+      },
       "degree_minutes": {
         "name": "Degree minutes"
       },
@@ -208,10 +232,10 @@
         }
       },
       "estimated_power": {
-        "name": "Estimated power"
+        "name": "House power (estimated)"
       },
       "estimated_energy": {
-        "name": "Estimated energy"
+        "name": "House energy (estimated)"
       },
       "operating_mode": {
         "name": "Operating mode",
